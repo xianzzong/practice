@@ -1,0 +1,5 @@
+Process finished with exit code 137 (interrupted by signal 9: SIGKILL)
+Process finished with exit code 137 (interrupted by signal 9: SIGKILL)
+Connected to pydev debugger (build 171.3780.115)
+
+Process finished with exit code 137 (interrupted by signal 9: SIGKILL)
