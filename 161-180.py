@@ -206,3 +206,45 @@ class BSTIterator(object):
         while node:
             self.result.append(node)
             node=node.left
+def calculateMinimumHP(dungeon):
+    row=len(dungeon)
+    if row==0:
+        return 0
+    col=len(dungeon[0])
+    if col==0:
+        return 0
+    result=[[0 for i in range(col)] for i in range(row)]
+    result[row-1][col-1]=max(0,-dungeon[row-1][col-1])+1
+    for row_index in range(row-1,-1,-1):
+        for col_index in range(col-1,-1,-1):
+            down=0
+            if row_index+1<row:
+                down=max(1,result[row_index+1][col_index]-dungeon[row_index][col_index])
+            right=0
+            if col_index+1<col:
+                right=max(1,result[row_index][col_index+1]-dungeon[row_index][col_index])
+            if down and right:
+                result[row_index][col_index]=min(down,right)
+            elif down:
+                result[row_index][col_index]=down
+            elif right:
+                result[row_index][col_index] = right
+    return result[0][0]
+# test=[[-2,-3,3],[-5,-10,1],[10,30,-5]]
+# #test=[[1,-3,3],[0,-2,0],[-3,-3,-3]]
+# res=calculateMinimumHP(test)
+# print res
+def largestNumber(nums):
+    def compare(a,b):
+        if (a+b)>(b+a):
+            return -1
+        else:
+            return 1
+    res=sorted([str(item) for item in nums],cmp=compare)
+    res=''.join(res).lstrip('0')
+    if res=='':
+        return '0'
+    return res
+test=[0,0]
+res=largestNumber(test)
+print res
