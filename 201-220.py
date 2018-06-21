@@ -408,7 +408,25 @@ def findWords(board, words):
 ##House Robber II
 
 def rob(nums):
-    return
-test = [2,3,2]
+    if len(nums) == 0:
+        return 0
+    elif len(nums) == 1:
+        return nums[0]
+
+    def get_max_money(homes):
+        if len(homes) == 0:
+            return 0
+        elif len(homes) == 1:
+            return homes[0]
+        result = [0 for i in range(len(homes))]
+        result[0] = homes[0]
+        result[1] = max(result[0], homes[1])
+        for i in range(2, len(homes)):
+            result[i] = max(result[i-2] + homes[i], result[i-1])
+        return result[-1]
+    max_money_one = get_max_money(nums[:-1])
+    max_money_two = get_max_money(nums[1:])
+    return max(max_money_one, max_money_two)
+test = [1,2,3,1]
 res = rob(test)
 print (res)
