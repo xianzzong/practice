@@ -427,6 +427,18 @@ def rob(nums):
     max_money_one = get_max_money(nums[:-1])
     max_money_two = get_max_money(nums[1:])
     return max(max_money_one, max_money_two)
-test = [1,2,3,1]
-res = rob(test)
-print (res)
+#test = [1,2,3,1]
+#res = rob(test)
+#print (res)
+def shortestPalindrome(s):
+    l = s + '#' + s[::-1]
+    p = [0 for i in range(len(l))]
+    for i in range(1, len(l), 1):
+        j = p[i - 1]
+        while j > 0 and l[i] != l[j]:
+            j = p[j - 1]
+        p[i] = j + (l[i] == l[j])
+    return s[::-1][:len(s)-p[-1]]+s
+test = 'aacecaaa'
+res = shortestPalindrome(test)
+print res
