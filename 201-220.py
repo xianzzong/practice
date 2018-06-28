@@ -1,62 +1,71 @@
-#coding=utf-8
+# coding=utf-8
 def rangeBitwiseAnd(m, n):
-    if m==n:
+    if m == n:
         return m
-    bin_n=bin(n)[2:]
-    bin_m=bin(m)[2:]
-    max_len=len(bin_n)
-    min_len=len(bin_m)
-    if max_len>min_len:
+    bin_n = bin(n)[2:]
+    bin_m = bin(m)[2:]
+    max_len = len(bin_n)
+    min_len = len(bin_m)
+    if max_len > min_len:
         return 0
     else:
-        res=''
+        res = ''
         for i in range(min_len):
-            if bin_m[i]==bin_n[i]:
-                res+=bin_m[i]
+            if bin_m[i] == bin_n[i]:
+                res += bin_m[i]
             else:
                 break
-        res=res+'0'*(min_len-len(res))
-    res=int(res,2)
+        res = res + '0' * (min_len - len(res))
+    res = int(res, 2)
     return res
+
+
 # res=rangeBitwiseAnd(10,11)
 # print res
 def isHappy(n):
     def getdigits(n):
-        res=[]
+        res = []
         while n:
             res.append(n % 10)
             n = n / 10
-        result=sum([x**2 for x in res])
+        result = sum([x ** 2 for x in res])
         return result
-    sum_sq_digits=[n]
+
+    sum_sq_digits = [n]
     while True:
-        tmp=getdigits(sum_sq_digits[-1])
-        if tmp==1:
+        tmp = getdigits(sum_sq_digits[-1])
+        if tmp == 1:
             return True
         elif tmp in sum_sq_digits:
             return False
         sum_sq_digits.append(tmp)
+
+
 # res=isHappy(123)
 # print res
 class ListNode(object):
     def __init__(self, x):
         self.val = x
         self.next = None
+
+
 def removeElements(head, val):
     """
     :type head: ListNode
     :type val: int
     :rtype: ListNode
     """
-    res=ListNode(0)
-    res.next=head
-    tmp=res
+    res = ListNode(0)
+    res.next = head
+    tmp = res
     while tmp and tmp.next:
-        if tmp.next.val==val:
-            tmp.next=tmp.next.next
+        if tmp.next.val == val:
+            tmp.next = tmp.next.next
         else:
-            tmp=tmp.next
+            tmp = tmp.next
     return res.next
+
+
 # a,b,c,d,e,f,g=ListNode(1),ListNode(1),ListNode(6),ListNode(3),ListNode(4),ListNode(5),ListNode(6)
 # a.next=b
 # b.next=None
@@ -67,20 +76,22 @@ def removeElements(head, val):
 # res=removeElements(a,1)
 # print res.val
 def countPrimes(n):
-    if n<2:
+    if n < 2:
         return 0
-    result=[True]*n
-    result[0]=False
-    result[1]=False
-    i=2
-    while i**2<n:
+    result = [True] * n
+    result[0] = False
+    result[1] = False
+    i = 2
+    while i ** 2 < n:
         if result[i]:
-            judge=i**2
-            while judge<n:
-                result[judge]=False
-                judge+=i
-        i+=1
+            judge = i ** 2
+            while judge < n:
+                result[judge] = False
+                judge += i
+        i += 1
     return sum(result)
+
+
 # res=countPrimes(20)
 # print res
 def isIsomorphic(s, t):
@@ -111,15 +122,18 @@ def isIsomorphic(s, t):
     #     return True
     # else:
     #     return False
-    sourcemap={};targetmap={}
+    sourcemap = {};
+    targetmap = {}
     for i in range(len(s)):
-        source,target=sourcemap.get(t[i]),targetmap.get(s[i])
-        if source==None and target==None:
-            sourcemap[t[i]]=s[i]
-            targetmap[s[i]]=t[i]
-        elif source!=s[i] or target!=t[i]:
+        source, target = sourcemap.get(t[i]), targetmap.get(s[i])
+        if source == None and target == None:
+            sourcemap[t[i]] = s[i]
+            targetmap[s[i]] = t[i]
+        elif source != s[i] or target != t[i]:
             return False
     return True
+
+
 # res=isIsomorphic('baba','abab')
 # print res
 def reverseList(head):
@@ -130,13 +144,16 @@ def reverseList(head):
     #     res.next=head
     #     head=tmp
     # return res.next
-    def doreverse(head,newhead):
-        if head==None:
+    def doreverse(head, newhead):
+        if head == None:
             return newhead
-        next=head.next
-        head.next=newhead
-        return doreverse(next,head)
-    return doreverse(head,None)
+        next = head.next
+        head.next = newhead
+        return doreverse(next, head)
+
+    return doreverse(head, None)
+
+
 # a,b,c,d,e,f,g=ListNode(1),ListNode(2),ListNode(3),ListNode(4),ListNode(5),ListNode(6),ListNode(7)
 # a.next=b
 # b.next=c
@@ -147,28 +164,30 @@ def reverseList(head):
 # res=reverseList(a)
 # print res
 def canFinish(numCourses, prerequisites):
-    #degree[i]用来记录课程i的先导课程数目
-    #childs[i]代表课程i是其中元素代表课程的先导课程
-    degree=[0]*numCourses
-    childs=[[]for i in range(numCourses)]
+    # degree[i]用来记录课程i的先导课程数目
+    # childs[i]代表课程i是其中元素代表课程的先导课程
+    degree = [0] * numCourses
+    childs = [[] for i in range(numCourses)]
     for item in prerequisites:
-        degree[item[0]]+=1
+        degree[item[0]] += 1
         childs[item[1]].append(item[0])
-    courses=set(range(numCourses))
-    flag=True
+    courses = set(range(numCourses))
+    flag = True
     while flag and len(courses):
-        flag=False
-        removelist=[]
+        flag = False
+        removelist = []
         for x in courses:
-            if degree[x]==0:
+            if degree[x] == 0:
                 for child in childs[x]:
-                    degree[child]-=1
+                    degree[child] -= 1
                 removelist.append(x)
-                flag=True
-            #removelist中代表已经修过的课程
+                flag = True
+                # removelist中代表已经修过的课程
         for item in removelist:
             courses.remove(item)
-    return len(courses)==0
+    return len(courses) == 0
+
+
 # res=canFinish(13,[[0,2],[3,2],[1,0],[5,0],
 #                   [6,0],[4,5],[5,3],[4,6],
 #                   [9,6],[6,7],[7,8],[10,9],
@@ -176,10 +195,12 @@ def canFinish(numCourses, prerequisites):
 # print res
 class TrieNode:
     def __init__(self):
-        self.children={}
-        self.isword=False
+        self.children = {}
+        self.isword = False
+
+
 class Trie(object):
-    #TLE
+    # TLE
     # def __init__(self):
     #     """
     #     Initialize your data structure here.
@@ -214,45 +235,50 @@ class Trie(object):
         """
         Initialize your data structure here.
         """
-        self.root=TrieNode()
+        self.root = TrieNode()
+
     def insert(self, word):
         """
         Inserts a word into the trie.
         :type word: str
         :rtype: void
         """
-        node=self.root
+        node = self.root
         for letter in word:
-            child=node.children.get(letter)
+            child = node.children.get(letter)
             if child is None:
-                child=TrieNode()
-                node.children[letter]=child
-            node=child
-        node.isword=True
+                child = TrieNode()
+                node.children[letter] = child
+            node = child
+        node.isword = True
+
     def search(self, word):
         """
         Returns if the word is in the trie.
         :type word: str
         :rtype: bool
         """
-        node=self.root
+        node = self.root
         for letter in word:
-            node=node.children.get(letter)
+            node = node.children.get(letter)
             if node is None:
                 return False
         return node.isword
+
     def startsWith(self, prefix):
         """
         Returns if there is any word in the trie that starts with the given prefix.
         :type prefix: str
         :rtype: bool
         """
-        node=self.root
+        node = self.root
         for letter in prefix:
-            node=node.children.get(letter)
+            node = node.children.get(letter)
             if node is None:
                 return False
         return True
+
+
 # obj=Trie()
 # obj.insert('hello')
 # obj.insert('word')
@@ -275,6 +301,8 @@ def minSubArrayLen(s, nums):
             subsum -= nums[start]
             start += 1
     return min_len
+
+
 # res=minSubArrayLen(7,[2,3,1,2,4,3])
 # print res
 class WordDictionary(object):
@@ -290,42 +318,44 @@ class WordDictionary(object):
         :type word: str
         :rtype: void
         """
-        node=self.root
+        node = self.root
         for letter in word:
-            child=node.children.get(letter)
-            if child==None:
-                child=TrieNode()
-                node.children[letter]=child
-            node=child
-        node.isword=True
+            child = node.children.get(letter)
+            if child == None:
+                child = TrieNode()
+                node.children[letter] = child
+            node = child
+        node.isword = True
+
     def search(self, word):
         """
         Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter.
         :type word: str
         :rtype: bool
         """
-        return self.find(self,self.root,word)
-    def find(self,node,word):
-        if word=='':
+        return self.find(self, self.root, word)
+
+    def find(self, node, word):
+        if word == '':
             return node.isword
-        if word[0]=='.':
+        if word[0] == '.':
             for x in node.children:
-                if self.find(node.children[x],word[1:]):
+                if self.find(node.children[x], word[1:]):
                     return True
         else:
-            child=node.children.get(word[0])
+            child = node.children.get(word[0])
             if child:
-                return self.find(child,word[1:])
+                return self.find(child, word[1:])
         return False
 
-class TreeNode(object):
 
+class TreeNode(object):
     def __init__(self):
         self.children = {}
         self.isword = False
 
-class Tree(object):
 
+class Tree(object):
     def __init__(self):
         self.root = TreeNode()
 
@@ -358,10 +388,11 @@ class Tree(object):
                 if node.children or node.isword:
                     break
         return True
-def findWords(board, words):
 
+
+def findWords(board, words):
     res = []
-    if len(board)==0:
+    if len(board) == 0:
         return res
     row = len(board)
     col = len(board[0])
@@ -395,6 +426,7 @@ def findWords(board, words):
             search(board[x][y], tree.root, x, y)
     return res
 
+
 # test = [
 #   ['o','a','a','n'],
 #   ['e','t','a','e'],
@@ -422,14 +454,17 @@ def rob(nums):
         result[0] = homes[0]
         result[1] = max(result[0], homes[1])
         for i in range(2, len(homes)):
-            result[i] = max(result[i-2] + homes[i], result[i-1])
+            result[i] = max(result[i - 2] + homes[i], result[i - 1])
         return result[-1]
+
     max_money_one = get_max_money(nums[:-1])
     max_money_two = get_max_money(nums[1:])
     return max(max_money_one, max_money_two)
-#test = [1,2,3,1]
-#res = rob(test)
-#print (res)
+
+
+# test = [1,2,3,1]
+# res = rob(test)
+# print (res)
 def shortestPalindrome(s):
     l = s + '#' + s[::-1]
     p = [0 for i in range(len(l))]
@@ -438,7 +473,18 @@ def shortestPalindrome(s):
         while j > 0 and l[i] != l[j]:
             j = p[j - 1]
         p[i] = j + (l[i] == l[j])
-    return s[::-1][:len(s)-p[-1]]+s
-test = 'aacecaaa'
-res = shortestPalindrome(test)
+    return s[::-1][:len(s) - p[-1]] + s
+
+
+# test = 'aacecaaa'
+# res = shortestPalindrome(test)
+# print res
+
+
+def findKthLargest(nums, k):
+    return nums[k]
+
+
+test = [3, 2, 1, 5, 6, 4]
+res = findKthLargest(test, 2)
 print res
