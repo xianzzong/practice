@@ -26,7 +26,7 @@ class Solution(object):
                 else:
                     last = mid - 1
         return False
-        #test = [1, 3, 1, 1, 1]
+#test = [1, 3, 1, 1, 1]
 
 # 83. Remove Duplicates from Sorted List
 
@@ -74,13 +74,13 @@ class Solution(object):
                 recent.next = tmp.next
         return res.next
 
-        # a, b, c, d, e = ListNode(1), ListNode(
-        # 1), ListNode(1), ListNode(2), ListNode(3)
-        #a.next = b
-        #b.next = c
-        #c.next = d
-        #d.next = e
-        # 84. Largest Rectangle in Histogram
+# a, b, c, d, e = ListNode(1), ListNode(
+# 1), ListNode(1), ListNode(2), ListNode(3)
+#a.next = b
+#b.next = c
+#c.next = d
+#d.next = e
+# 84. Largest Rectangle in Histogram
 
 
 class Solution(object):
