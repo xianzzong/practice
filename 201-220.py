@@ -624,20 +624,6 @@ class Solution(object):
 class Solution(object):
     def getSkyline(self, buildings):
         from heapq import heappush, heappop
-        events = [(L, -H, R) for L, R, H in buildings]
-        events += list({(R, 0, 0) for _, R, _ in buildings})
-        events.sort()
-        res = [[0, 0]]
-        live = [(0, float("inf"))]
-        for pos, negH, R in events:
-            while live[0][1] <= pos:
-                heappop(live)
-            if negH:
-                heappush(live, (negH, R))
-            if res[-1][1] != -live[0][0]:
-                res += [[pos, -live[0][0]]]
-        return res[1:]
-
         # 对于一个 building, 他由 (l, r, h) 三元组组成, 我们可以将其分解为两种事件:
         #     1. 在 left position, 高度从 0 增加到 h(并且这个高度将持续到 right position);
         #     2. 在 right position, 高度从 h 降低到 0.
@@ -651,7 +637,9 @@ class Solution(object):
         # 并且, 对于同一 positon, 我们需要先触发更高 h 的事件, 先触发更高 h 的事件后,
         # 那么高的 h 相比于低的 h 会占据更高的 skyline, 低 h 的 `key point` 就一定不会产生; 相反, 可能会从低到高连续产生冗余的 `key point`
         # 所以, event 不仅需要按第一个元素 position 排序, 在 position 相同时, 第二个元素 h 也是必须有序的
-        events = sorted([(l, -h, r) for l, r, h in buildings] + list({(r, 0, 0) for l, r, h in buildings}))
+        events = sorted([(l, -h, r) for l, r, h in buildings] +
+                        list({(r, 0, 0) for l, r, h in buildings}))
+        print events
 
         # res 记录了 `key point` 的结果: [x, h]
         # 同时 res[-1] 处的 `key point` 代表了在下一个 event 触发之前, 一直保持的最高的 skyline
@@ -667,11 +655,11 @@ class Solution(object):
             # 如果当前 position 大于等于了 hp 中的 endposition, 那么该 skyline 会被清除掉
             # 由于在有 high skyline 的情况下, low skyline 不会有影响, 因此, 只需要按从高到低的方式清除 skyline, 直到剩下一个最高的 skyline 并且它的 endposition 大于当前 position
             while l >= hp[0][1]:
-                heapq.heappop(hp)
+                heappop(hp)
 
             # 对于高度增加到 h 的时间(neg_h < 0), 我们需要添加一个 skyline, 他将持续到 r 即 endposition
             if neg_h:
-                heapq.heappush(hp, (neg_h, r))
+                heappush(hp, (neg_h, r))
 
             # 由于 res[-1][1] 记录了在当前事件触发之前一直保持的 skyline
             # 如果当前事件触发后 skyline 发生了改变
@@ -682,8 +670,30 @@ class Solution(object):
                 res.append([l, -hp[0][0]])
 
         return res[1:]
+
+    def getSkyline2(self, buildings):
+        from heapq import heappush, heappop
+        events = set()
+        for l, r, h in buildings:
+            events.add((l, -h, r))
+            events.add((r, 0, 0))
+        events = list(events)
+        events = sorted(events)
+        print events
+        res = [[0, 0]]
+        hp = [(0, float("inf"))]
+        for l, h, r in events:
+            while l >= hp[0][1]:
+                heappop(hp)
+            if h:
+                heappush(hp, (h, r))
+            if res[-1][1] != -hp[0][0]:
+                res.append([l, -hp[0][0]])
+        return res[1:]
+
+
 if __name__ == "__main__":
     solu = Solution()
-    res = solu.getSkyline(
+    res = solu.getSkyline2(
         [[2, 9, 10], [3, 7, 15], [5, 12, 12], [15, 20, 10], [19, 24, 8]])
     print res
